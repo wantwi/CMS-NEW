@@ -1,4 +1,4 @@
-import { Mail, Home, Circle, Settings } from 'react-feather'
+import { Mail, Home, Circle, Settings, User, Briefcase } from 'react-feather'
 
 export default [
   {
@@ -9,10 +9,64 @@ export default [
   },
   {
     id: 'secondPage',
-    title: 'Second Page',
+    title: 'Activity',
     icon: <Mail size={20} />,
-    navLink: '/second-page'
+    navLink: '/activity'
   },
+  {
+    id: 'visitors',
+    title: 'Operation',
+    icon: <User size={20} />,
+    navLink: '/operation'
+  },
+  {
+    id: 'member',
+    title: 'Member',
+    icon: <User size={20} />,
+    children: [
+      {
+        id: 'Adult',
+        title: 'Adult',
+        icon: <Circle size={12} />,
+        navLink: '/member/adult'
+      },
+      {
+        id: 'junior',
+        title: 'Junior',
+        icon: <Circle size={12} />,
+        navLink: '/member/junior'
+      },
+      {
+        id: 'Leader',
+        title: 'Leader',
+        icon: <Circle size={12} />,
+        navLink: '/member/leader'
+      },
+      {
+        id: 'committee',
+        title: 'Committee',
+        icon: <Circle size={12} />,
+        navLink: '/member/committee'
+      }
+    ]
+  },
+  {
+    id: 'visitor',
+    title: 'Visitor',
+    icon: <User size={20} />,
+    navLink: '/visitor'
+  },
+ 
+  {
+    header: 'Transaction'
+  },
+  {
+    id: 'payment',
+    title: 'Payment',
+    icon: <Briefcase size={20} />,
+    navLink: '/payment'
+  },
+ 
   {
     header: 'Setup'
   },
@@ -39,6 +93,18 @@ export default [
     id: 'Church_Operation',
     title: 'Church Operation',
     icon: <Settings size={20} />,
-    navLink: '/setup/operation'
+    navLink: '/setup/operations'
+  },
+  {
+    id: 'contribution',
+    title: 'Contribution',
+    icon: <Settings size={20} />,
+    navLink: '/setup/contribution'
+  },
+  {
+    id: 'committee',
+    title: 'Committee',
+    icon: <Settings size={20} />,
+    navLink: '/setup/committee'
   }
 ]
