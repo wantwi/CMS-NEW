@@ -9,13 +9,11 @@ import { useForm, Controller } from 'react-hook-form'
 import { Label, Row, Col, Button, Form, Input, FormFeedback } from 'reactstrap'
 
 const defaultValues = {
-  google: '',
-  twitter: '',
-  facebook: '',
-  linkedin: ''
+  name: '',
+  contact: ''
 }
 
-const SocialLinks = ({setformData, stepper }) => {
+const SocialLinks = ({ setformData, stepper }) => {
   // ** Hooks
   const {
     control,
@@ -25,9 +23,9 @@ const SocialLinks = ({setformData, stepper }) => {
   } = useForm({ defaultValues })
 
   const onSubmit = data => {
-    console.log({data})
+    console.log({ data })
     if (Object.values(data).every(field => field.length > 0)) {
-      setformData((pre) => ({...pre, ...data}))
+      setformData((pre) => ({ ...pre, ...data }))
       alert('submitted')
     } else {
       for (const key in data) {
@@ -43,71 +41,39 @@ const SocialLinks = ({setformData, stepper }) => {
 
   return (
     <Fragment>
-      <div className='content-header'>
-        <h5 className='mb-0'>Social Links</h5>
-        <small>Enter Your Social Links.</small>
-      </div>
+
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
-          <Col md='6' className='mb-1'>
-            <Label className='form-label' for='twitter'>
-              Twitter
+          <Col md='8' className='mb-1'>
+            <Label className='form-label' for='name'>
+              Name
             </Label>
             <Controller
-              id='twitter'
-              name='twitter'
+              id='name'
+              name='name'
               control={control}
               render={({ field }) => (
-                <Input placeholder='https://twitter.com/johndoe' invalid={errors.twitter && true} {...field} />
+                <Input placeholder='Name' invalid={errors.name && true} {...field} />
               )}
             />
-            {errors.twitter && <FormFeedback>{errors.twitter.message}</FormFeedback>}
+            {errors.name && <FormFeedback>{errors.name.message}</FormFeedback>}
           </Col>
-          <Col md='6' className='mb-1'>
-            <Label className='form-label' for='facebook'>
-              Facebook
+          <Col md='4' className='mb-1'>
+            <Label className='form-label' for='contact'>
+              Contact
             </Label>
             <Controller
-              id='facebook'
-              name='facebook'
+              id='contact'
+              name='contact'
               control={control}
               render={({ field }) => (
-                <Input placeholder='https://facebook.com/johndoe' invalid={errors.facebook && true} {...field} />
+                <Input type='number' placeholder='Active contact' invalid={errors.contact && true} {...field} />
               )}
             />
-            {errors.facebook && <FormFeedback>{errors.facebook.message}</FormFeedback>}
-          </Col>
-        </Row>
-        <Row>
-          <Col md='6' className='mb-1'>
-            <Label className='form-label' for='google'>
-              Google+
-            </Label>
-            <Controller
-              id='google'
-              name='google'
-              control={control}
-              render={({ field }) => (
-                <Input placeholder='https://plus.google.com/johndoe' invalid={errors.google && true} {...field} />
-              )}
-            />
-            {errors.google && <FormFeedback>{errors.google.message}</FormFeedback>}
-          </Col>
-          <Col md='6' className='mb-1'>
-            <Label className='form-label' for='linkedin'>
-              Linkedin
-            </Label>
-            <Controller
-              id='linkedin'
-              name='linkedin'
-              control={control}
-              render={({ field }) => (
-                <Input placeholder='https://linkedin.com/johndoe' invalid={errors.linkedin && true} {...field} />
-              )}
-            />
-            {errors.linkedin && <FormFeedback>{errors.linkedin.message}</FormFeedback>}
+            {errors.contact && <FormFeedback>{errors.contact.message}</FormFeedback>}
           </Col>
         </Row>
+
         <div className='d-flex justify-content-between'>
           <Button color='primary' className='btn-prev' onClick={() => stepper.previous()}>
             <ArrowLeft size={14} className='align-middle me-sm-25 me-0'></ArrowLeft>
