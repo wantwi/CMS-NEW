@@ -56,7 +56,7 @@ export default [
     icon: <User size={20} />,
     navLink: '/visitor'
   },
- 
+
   {
     header: 'Transaction'
   },
@@ -66,7 +66,7 @@ export default [
     icon: <Briefcase size={20} />,
     navLink: '/payment'
   },
- 
+
   {
     header: 'Setup'
   },

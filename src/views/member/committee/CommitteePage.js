@@ -69,7 +69,8 @@ const columns = [
       return (
         <div>Not assigned</div>
       )
-    }
+    },
+    grow: 0
   },
   {
     name: 'Status',
