@@ -25,3 +25,34 @@
     border-top-color: rgba(0, 0, 0, .12) !important;
     border-top: 0 !important
 }
+
+.e-pagercontainer {
+    border-radius: 0 !important;
+    border-style: none !important;
+    border-width: 0px !important;
+    float: right !important;
+}
+
+.e-pager .e-pagercontainer .e-firstpagedisabled,
+[dir=ltr] .e-pager .e-pagercontainer .e-prevpagedisabled,
+[dir=ltr] .e-pager .e-pagercontainer .e-nextpage,
+[dir=ltr] .e-pager .e-pagercontainer .e-lastpage,
+[dir=ltr] .e-pager .e-pagercontainer .e-nextpagedisabled,
+[dir=ltr] .e-pager .e-pagercontainer .e-lastpagedisabled {
+    border-right-style: none !important;
+    border-right-width: 0px !important;
+    margin-right: 0 !important;
+    padding: 14px 12px 12px 11.5px;
+    border-radius: 50%;
+}
+
+.e-pager .e-currentitem,
+[dir] .e-pager .e-currentitem:hover {
+    background: #e9ecef !important;
+    border-radius: 50% !important;
+}
+
+.e-pager div.e-parentmsgbar {
+    float: left !important;
+    padding-right: 0;
+}
