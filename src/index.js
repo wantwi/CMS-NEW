@@ -31,6 +31,10 @@ import '@styles/react/libs/toastify/toastify.scss'
 import './@core/assets/fonts/feather/iconfont.css'
 import './@core/scss/core.scss'
 import './assets/scss/style.scss'
+import { registerLicense } from '@syncfusion/ej2-base'
+
+registerLicense('ORg4AjUWIQA/Gnt2VVhhQlFaclhJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxRdkNhW35ZcXVWRWBYVEI=')
+
 
 // ** Service Worker
 import * as serviceWorker from './serviceWorker'

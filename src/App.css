@@ -1,0 +1,27 @@
+@import '../node_modules/@syncfusion/ej2-base/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/bootstrap5.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap5.css';
+@import "../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap5.css";
+
+.e-grid {
+    min-height: 52px !important;
+    border-bottom-width: 1px !important;
+    border-bottom-color: rgba(0, 0, 0, .12) !important;
+    border-bottom-style: solid !important;
+    border-color: rgba(0, 0, 0, .12) !important;
+    font-family: "Montserrat", Helvetica, Arial, serif !important;
+    color: #6e6b7b;
+
+}
+
+.e-grid .e-gridheader {
+    background-color: #fff;
+    border-bottom-color: rgba(0, 0, 0, .12) !important;
+    border-top-color: rgba(0, 0, 0, .12) !important;
+    border-top: 0 !important
+}

@@ -20,9 +20,14 @@ const Routes = [
     component: lazy(() => import("../../views/SecondPage"))
   },
   {
+    path: "/operation/add",
+    component: lazy(() => import("../../views/operation/AddOperationsPage"))
+  },
+  {
     path: "/operation",
     component: lazy(() => import("../../views/operation/OperationsPage"))
   },
+
   {
     path: "/setup/classes/adult",
     component: lazy(() => import("../../views/setups/classes-setup/adult-class/AdultClassSetupPage"))

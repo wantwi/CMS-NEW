@@ -13,11 +13,26 @@ export default [
     icon: <Mail size={20} />,
     navLink: '/activity'
   },
+
   {
-    id: 'visitors',
-    title: 'Operation',
+    id: 'Operation',
+    title: 'Church Operation',
     icon: <User size={20} />,
-    navLink: '/operation'
+    children: [
+      {
+        id: 'list',
+        title: 'Record',
+        icon: <Circle size={12} />,
+        navLink: '/operation'
+      },
+      {
+        id: 'new',
+        title: 'New Record',
+        icon: <Circle size={12} />,
+        navLink: '/operation/add'
+      }
+
+    ]
   },
   {
     id: 'member',
