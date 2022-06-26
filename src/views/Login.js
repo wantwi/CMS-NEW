@@ -4,8 +4,45 @@ import { Facebook, Twitter, Mail, GitHub } from 'react-feather'
 import InputPasswordToggle from '@components/input-password-toggle'
 import { Row, Col, CardTitle, CardText, Form, Label, Input, Button } from 'reactstrap'
 import '@styles/react/pages/page-authentication.scss'
+import { useLoginMutation } from '../features/auth/authApiSlice'
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import { setCredentials } from '../features/auth/authSlice'
+
 
 const LoginCover = () => {
+  const [login, { isLoading }] = useLoginMutation()
+  const dispatch = useDispatch()
+  console.log({ isLoading })
+  const [userName, setuserName] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const data = {}
+    data.username = userName
+    data.password = password
+
+    try {
+      const userData = await login(data).unwrap()
+      dispatch(setCredentials({ ...userData }))
+
+    } catch (err) {
+      console.log({ err })
+      // if (!err?.originalStatus) {
+      //     // isLoading: true until timeout occurs
+      //     setErrMsg('No Server Response');
+      // } else if (err.originalStatus === 400) {
+      //     setErrMsg('Missing Username or Password');
+      // } else if (err.originalStatus === 401) {
+      //     setErrMsg('Unauthorized');
+      // } else {
+      //     setErrMsg('Login Failed');
+      // }
+      // errRef.current.focus();
+    }
+  }
+
   const { skin } = useSkin()
 
   const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
@@ -81,7 +118,7 @@ const LoginCover = () => {
                 <Label className='form-label' for='login-email'>
                   Email
                 </Label>
-                <Input type='email' id='login-email' placeholder='john@example.com' autoFocus />
+                <Input type='text' id='login-email' name='username' onChange={(e) => setuserName(e.target.value)} placeholder='username' autoFocus />
               </div>
               <div className='mb-1'>
                 <div className='d-flex justify-content-between'>
@@ -92,7 +129,7 @@ const LoginCover = () => {
                     <small>Forgot Password?</small>
                   </Link>
                 </div>
-                <InputPasswordToggle className='input-group-merge' id='login-password' />
+                <InputPasswordToggle name='password' onChange={(e) => setPassword(e.target.value)} className='input-group-merge' id='login-password' />
               </div>
               <div className='form-check mb-1'>
                 <Input type='checkbox' id='remember-me' />
@@ -100,7 +137,7 @@ const LoginCover = () => {
                   Remember Me
                 </Label>
               </div>
-              <Button color='primary' tag={Link} block to='/'>
+              <Button color='primary' block onClick={handleSubmit} >
                 Sign in
               </Button>
             </Form>
