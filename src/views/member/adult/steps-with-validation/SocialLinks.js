@@ -1,4 +1,5 @@
 // ** React Imports
+// import axios from 'axios'
 import { Fragment } from 'react'
 
 // ** Third Party Components
@@ -13,7 +14,7 @@ const defaultValues = {
   contact: ''
 }
 
-const SocialLinks = ({ setformData, stepper }) => {
+const SocialLinks = ({fileRef, formData, setformData, stepper }) => {
   // ** Hooks
   const {
     control,
@@ -22,11 +23,43 @@ const SocialLinks = ({ setformData, stepper }) => {
     formState: { errors }
   } = useForm({ defaultValues })
 
+  const postData = async (fd) => {
+      try {
+
+        const request =  await fetch(`http://localhost:3004/api/v1/member`, {
+          method:"post",
+          body:fd,
+          headers:{
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        //  const request = await axios.post(`http://localhost:3004/api/v1/member`, fd, {
+        //      headers: {
+        //        'Content-Type': 'multipart/form-data'
+        //      }
+        //  })
+         console.log({request})
+     } catch (error) {
+         console.log({error})
+     }
+  }
+
   const onSubmit = data => {
     console.log({ data })
     if (Object.values(data).every(field => field.length > 0)) {
       setformData((pre) => ({ ...pre, ...data }))
-      alert('submitted')
+
+      const fd = new FormData()
+      fd.append('image', fileRef.current?.files[0])
+      fd.append('firstName', formData?.firstName)
+      fd.append('lastName', formData?.lastName)
+      fd.append('gender', formData?.gender)
+      fd.append('dob', formData?.dob)
+      fd.append('homeRegion', formData.homeRegion)
+      fd.append('phone', formData.phone)
+
+      postData(fd)
+      
     } else {
       for (const key in data) {
         if (data[key].length === 0) {

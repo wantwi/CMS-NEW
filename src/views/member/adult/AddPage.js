@@ -15,6 +15,7 @@ import AccountDetails from './steps-with-validation/AccountDetails'
 const AddNewModal = () => {
   // ** Ref
   const ref = useRef(null)
+  const fileRef = useRef(null)
 
   // ** State
   const [stepper, setStepper] = useState(null)
@@ -37,7 +38,7 @@ const AddNewModal = () => {
       id: 'emergency-contact',
       title: 'Emergency Contact',
       subtitle: 'Add Emergency Contact',
-      content: <SocialLinks formData={formData} setformData={setformData} stepper={stepper} />
+      content: <SocialLinks fileRef = {fileRef} formData={formData} setformData={setformData} stepper={stepper} />
     }
   ]
 
@@ -51,7 +52,7 @@ const AddNewModal = () => {
     delete formData?.image
   }
 
-  console.log({ formData })
+  //console.log({ formData })
 
   return (
     <Row>
@@ -74,6 +75,7 @@ const AddNewModal = () => {
               style={{ height: 220, width: 220, marginTop: 10 }}
 
             />
+            <input ref = {fileRef} name = "image" type = "file"/>
 
           </div>
 
