@@ -32,12 +32,10 @@ const init = [
     { operation: "Mid-week Service", week1: 0, week2: 0, week3: 0, week4: 0, week5: 0 },
     { operation: "Death", week1: 0, week2: 0, week3: 0, week4: 0, week5: 0 }
 ]
-// const queryCellInfoEvent = (args) => {
-//     const arg = args.column.field
-//     if (arg === "sum") {
-//         args.rowSpan = init.length
-//     }
-// }
+const queryCellInfoEvent = ({data}) => {
+  const {week1, week2, week3, week4, week5} = data
+  data.sum = week1 + week2 + week3 + week4 + week5
+}
 const AddOperationsPage = () => {
     const [data, setdata] = useState([])
     const grid = useRef(null)
@@ -54,36 +52,8 @@ const AddOperationsPage = () => {
     const saveBtnClick = () => {
         console.log({ grid: grid.current.currentViewData })
         // setIsSave(true)
-
-
     }
 
-    const content = <GridComponent
-        ref={grid}
-        editSettings={{
-            allowEditing: true,
-            allowAdding: true,
-            allowDeleting: true,
-            newRowPosition: 'Top'
-        }}
-        // queryCellInfo={queryCellInfoEvent}
-        height={400}
-        dataSource={data}
-        allowPaging={true}
-        pageSettings={{ pageCount: 5 }}>
-        <ColumnsDirective>
-            <ColumnDirective isPrimaryKey={true} field='operation' headerText='Operation' width='200'></ColumnDirective>
-            <ColumnDirective field='week1' headerText='Week1' width='70' showInColumnChooser={false}></ColumnDirective>
-            <ColumnDirective field='week2' headerText='Week2' width='70' />
-            <ColumnDirective field='week3' headerText='Week3' width='70' />
-            <ColumnDirective field='week4' headerText='Week4' width='70' />
-            <ColumnDirective field='week5' headerText='Week5' width='70'></ColumnDirective>
-            <ColumnDirective field='sum' headerText='sum' width='70'></ColumnDirective>
-
-            <ColumnDirective headerText='Action' width='100' commands={commands}></ColumnDirective>
-        </ColumnsDirective>
-        <Inject services={[Page, CommandColumn, Toolbar, Edit, Group, ColumnChooser]} />
-    </GridComponent>
 
     return (
         <Card className='p-2'>
@@ -99,7 +69,33 @@ const AddOperationsPage = () => {
 
                 </div>
             </CardHeader>
-            {content}
+            <GridComponent
+        ref={grid}
+        editSettings={{
+            allowEditing: true,
+            allowAdding: true,
+            allowDeleting: true,
+            newRowPosition: 'Top'
+        }}
+        queryCellInfo={queryCellInfoEvent}
+        height={400}
+        dataSource={data}
+        allowPaging={true}
+        pageSettings={{ pageCount: 5 }}>
+        <ColumnsDirective>
+            <ColumnDirective isPrimaryKey={true} field='operation' headerText='Operation' width='200'></ColumnDirective>
+            <ColumnDirective field='week1' headerText='Week1' width='70' showInColumnChooser={false}></ColumnDirective>
+            <ColumnDirective field='week2' headerText='Week2' width='70' />
+            <ColumnDirective field='week3' headerText='Week3' width='70' />
+            <ColumnDirective field='week4' headerText='Week4' width='70' />
+            <ColumnDirective field='week5' headerText='Week5' width='70'></ColumnDirective>
+            <ColumnDirective isPrimaryKey={true} field='sum'  headerText='Sum' width='70'></ColumnDirective>
+
+            <ColumnDirective headerText='Action' width='100' commands={commands}></ColumnDirective>
+        </ColumnsDirective>
+        <Inject services={[Page, CommandColumn, Toolbar, Edit, Group, ColumnChooser]} />
+    </GridComponent>
+
         </Card>
     )
 }
