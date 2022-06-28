@@ -1,7 +1,7 @@
 // ** Reducers Imports
 import navbar from './navbar'
 import layout from './layout'
-import auth from './authentication'
+import auth from './features/auth/authSlice'
 
 const rootReducer = {
   auth,
