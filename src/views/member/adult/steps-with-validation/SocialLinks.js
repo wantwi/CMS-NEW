@@ -1,5 +1,5 @@
 // ** React Imports
-// import axios from 'axios'
+ import axios from 'axios'
 import { Fragment } from 'react'
 
 // ** Third Party Components
@@ -14,7 +14,7 @@ const defaultValues = {
   contact: ''
 }
 
-const SocialLinks = ({fileRef, formData, setformData, stepper }) => {
+const SocialLinks = ({fileRef2, fileRef, setformData, stepper }) => {
   // ** Hooks
   const {
     control,
@@ -26,18 +26,18 @@ const SocialLinks = ({fileRef, formData, setformData, stepper }) => {
   const postData = async (fd) => {
       try {
 
-        const request =  await fetch(`http://localhost:3004/api/v1/member`, {
-          method:"post",
-          body:fd,
-          headers:{
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        //  const request = await axios.post(`http://localhost:3004/api/v1/member`, fd, {
-        //      headers: {
-        //        'Content-Type': 'multipart/form-data'
-        //      }
-        //  })
+        // const request =  await fetch(`http://localhost:3004/api/v1/member`, {
+        //   method:"post",
+        //   body:fd,
+        //   headers:{
+        //     'Content-Type': 'multipart/form-data'
+        //   }
+        // })https://expressgh.herokuapp.com/api/v1
+         const request = await axios.post(`http://localhost:3004/api/v1/add/hotels`, fd, {
+             headers: {
+               'Content-Type': 'multipart/form-data'
+             }
+         })
          console.log({request})
      } catch (error) {
          console.log({error})
@@ -50,13 +50,36 @@ const SocialLinks = ({fileRef, formData, setformData, stepper }) => {
       setformData((pre) => ({ ...pre, ...data }))
 
       const fd = new FormData()
-      fd.append('image', fileRef.current?.files[0])
-      fd.append('firstName', formData?.firstName)
-      fd.append('lastName', formData?.lastName)
-      fd.append('gender', formData?.gender)
-      fd.append('dob', formData?.dob)
-      fd.append('homeRegion', formData.homeRegion)
-      fd.append('phone', formData.phone)
+     // fd.append('image', fileRef.current?.files[0])
+ 
+
+    fd.append('about', "About context")
+
+    fd.append('amenities', "gym")
+
+    fd.append('category', "Hotels")
+
+    fd.append('email', "test@example.com")
+
+    fd.append('gallery', fileRef2.current?.files[0])
+
+    fd.append('landingPageImage', fileRef.current?.files[0])
+
+    fd.append('landmarks', "Accra")
+
+    fd.append('location', "Accra")
+
+    fd.append('name', "JJJJJ")
+
+    fd.append('phone', "0398398373")
+
+    fd.append('website', "www.example.com")
+      // fd.append('about', formData?.firstName)
+      // fd.append('lastName', formData?.lastName)
+      // fd.append('gender', formData?.gender)
+      // fd.append('dob', formData?.dob)
+      // fd.append('homeRegion', formData.homeRegion)
+      // fd.append('phone', formData.phone)
 
       postData(fd)
       

@@ -16,6 +16,7 @@ const AddNewModal = () => {
   // ** Ref
   const ref = useRef(null)
   const fileRef = useRef(null)
+  const fileRef2 = useRef(null)
 
   // ** State
   const [stepper, setStepper] = useState(null)
@@ -38,7 +39,7 @@ const AddNewModal = () => {
       id: 'emergency-contact',
       title: 'Emergency Contact',
       subtitle: 'Add Emergency Contact',
-      content: <SocialLinks fileRef = {fileRef} formData={formData} setformData={setformData} stepper={stepper} />
+      content: <SocialLinks fileRef2={fileRef2} fileRef = {fileRef} formData={formData} setformData={setformData} stepper={stepper} />
     }
   ]
 
@@ -76,6 +77,7 @@ const AddNewModal = () => {
 
             />
             <input ref = {fileRef} name = "image" type = "file"/>
+            <input ref = {fileRef2} multiple name = "image2" type = "file"/>
 
           </div>
 
