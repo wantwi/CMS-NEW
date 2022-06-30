@@ -5,17 +5,13 @@ import InputPasswordToggle from '@components/input-password-toggle'
 import { Row, Col, CardTitle, CardText, Form, Label, Input, Button } from 'reactstrap'
 import '@styles/react/pages/page-authentication.scss'
 // import { useLoginMutation } from '../features/auth/authApiSlice'
-import { useDispatch } from 'react-redux'
-import { useState } from 'react'
-import { useLoginMutation } from '../redux/features/auth/authApiSlice'
-import { setCredentials } from '../redux/features/auth/authSlice'
+
 // import { setCredentials } from '../features/auth/authSlice'
 
 
 const LoginCover = () => {
   const history = useHistory()
-  const [login, { isLoading }] = useLoginMutation()
-  const dispatch = useDispatch()
+
   console.log({ isLoading })
   const [userName, setuserName] = useState("")
   const [password, setPassword] = useState("")
@@ -28,7 +24,7 @@ const LoginCover = () => {
 
     try {
       const userData = await login(data).unwrap()
-      dispatch(setCredentials({ ...userData }))
+      // dispatch(setCredentials({ ...userData }))
       console.log({ userData })
 
       history.push('/home')
