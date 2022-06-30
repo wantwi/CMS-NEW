@@ -16,6 +16,8 @@ const defaultValues = {
 
 const SocialLinks = ({fileRef2, fileRef, setformData, stepper }) => {
   // ** Hooks
+
+  
   const {
     control,
     setError,
@@ -49,20 +51,21 @@ const SocialLinks = ({fileRef2, fileRef, setformData, stepper }) => {
     if (Object.values(data).every(field => field.length > 0)) {
       setformData((pre) => ({ ...pre, ...data }))
 
+    
       const fd = new FormData()
-     // fd.append('image', fileRef.current?.files[0])
- 
-
     fd.append('about', "About context")
 
-    fd.append('amenities', "gym")
+    fd.append('amenities', ['gym'])
 
     fd.append('category', "Hotels")
 
     fd.append('email', "test@example.com")
 
-    fd.append('gallery', fileRef2.current?.files[0])
+    for (const key in fileRef2.current?.files) {
+      fd.append('gallery', fileRef2.current?.files[key])
+  }
 
+  
     fd.append('landingPageImage', fileRef.current?.files[0])
 
     fd.append('landmarks', "Accra")
