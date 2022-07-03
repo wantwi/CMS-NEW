@@ -18,7 +18,8 @@ import { DefaultRoute, Routes } from './routes'
 import BlankLayout from '@layouts/BlankLayout'
 import VerticalLayout from '@src/layouts/VerticalLayout'
 import HorizontalLayout from '@src/layouts/HorizontalLayout'
-
+import { ProtectedRoute } from './routes/ProtectedRoutes'
+import PersistLogin from "./routes/PersistLogin"
 const Router = () => {
   // ** Hooks
   const { layout, setLayout, setLastLayout } = useLayout()
@@ -154,24 +155,32 @@ const Router = () => {
                               /*eslint-disable */
                               {...(route.appLayout
                                 ? {
-                                    appLayout: route.appLayout
-                                  }
+                                  appLayout: route.appLayout
+                                }
                                 : {})}
                               {...(route.meta
                                 ? {
-                                    routeMeta: route.meta
-                                  }
+                                  routeMeta: route.meta
+                                }
                                 : {})}
                               {...(route.className
                                 ? {
-                                    wrapperClass: route.className
-                                  }
+                                  wrapperClass: route.className
+                                }
                                 : {})}
-                              /*eslint-enable */
+                            /*eslint-enable */
                             >
-                              <Suspense fallback={null}>
-                                <route.component {...props} />
-                              </Suspense>
+                              <PersistLogin>
+                                <ProtectedRoute>
+                                  <Suspense fallback={null}>
+                                    <route.component {...props} />
+                                  </Suspense>
+
+                                </ProtectedRoute>
+
+
+                              </PersistLogin>
+
                             </LayoutWrapper>
                           )}
                         </Fragment>

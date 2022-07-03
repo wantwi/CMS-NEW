@@ -12,13 +12,29 @@ import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from
 
 // ** Default Avatar Image
 import defaultAvatar from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import useAuth from '../../../../hooks/useAuth'
+import { logout } from '../../../../auth/config'
 
 const UserDropdown = () => {
+  const { auth, setAuth } = useAuth()
+
+  const logoutUser = async () => {
+
+    try {
+      const response = await logout()
+      console.log({ response })
+      setAuth(null)
+    } catch (error) {
+      setAuth(null)
+    }
+
+  }
+
   return (
     <UncontrolledDropdown tag='li' className='dropdown-user nav-item'>
       <DropdownToggle href='/' tag='a' className='nav-link dropdown-user-link' onClick={e => e.preventDefault()}>
         <div className='user-nav d-sm-flex d-none'>
-          <span className='user-name fw-bold'>John Doe</span>
+          <span className='user-name fw-bold'>{auth?.name}</span>
           <span className='user-status'>Admin</span>
         </div>
         <Avatar img={defaultAvatar} imgHeight='40' imgWidth='40' status='online' />
@@ -53,7 +69,7 @@ const UserDropdown = () => {
           <HelpCircle size={14} className='me-75' />
           <span className='align-middle'>FAQ</span>
         </DropdownItem>
-        <DropdownItem tag={Link} to='/login'>
+        <DropdownItem onClick={logoutUser}>
           <Power size={14} className='me-75' />
           <span className='align-middle'>Logout</span>
         </DropdownItem>

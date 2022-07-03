@@ -38,19 +38,21 @@ registerLicense('ORg4AjUWIQA/Gnt2VVhhQlFaclhJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXx
 
 // ** Service Worker
 import * as serviceWorker from './serviceWorker'
-
+import { AuthProvider } from "./auth/context/AuthProvider"
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Suspense fallback={<Spinner />}>
-      <ThemeContext>
-        <LazyApp />
-        <ToastContainer newestOnTop />
-      </ThemeContext>
-    </Suspense>
-  </Provider>,
+  <AuthProvider>
+    <Provider store={store}>
+      <Suspense fallback={<Spinner />}>
+        <ThemeContext>
+          <LazyApp />
+          <ToastContainer newestOnTop />
+        </ThemeContext>
+      </Suspense>
+    </Provider>
+  </AuthProvider>,
   document.getElementById('root')
 )
 

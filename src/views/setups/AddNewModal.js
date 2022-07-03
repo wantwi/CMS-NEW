@@ -1,6 +1,6 @@
 // ** React Imports
-import { useState } from 'react'
-import useCustomApi from '../../../../api/useCustomApi'
+import { useEffect, useState } from 'react'
+
 // ** Third Party Components
 import Flatpickr from 'react-flatpickr'
 import { User, Briefcase, Mail, Calendar, DollarSign, X } from 'react-feather'
@@ -13,17 +13,13 @@ import Select from 'react-select'
 
 // ** Styles
 import '@styles/react/libs/flatpickr/flatpickr.scss'
-import { addClass, selectAllStatus } from '../../../../features/setups/adulClassSlice'
-import { useDispatch, useSelector } from 'react-redux'
 
 
-const AddNewModal = ({ open, handleModal }) => {
-  const dispatch = useDispatch()
-  const axios = useCustomApi()
+const AddNewModal = ({ title, open, handleModal, handleSubmit }) => {
+
   const [name, setName] = useState("")
   const [status, setStatus] = useState({ value: 'Active', label: 'Active' })
 
-  const req_status = useSelector(selectAllStatus)
   // ** State
   // const [Picker, setPicker] = useState(new Date())
 
@@ -32,33 +28,14 @@ const AddNewModal = ({ open, handleModal }) => {
 
   const canSave = [name, status].every(Boolean)
 
-  // const addClass = async () => {
-  //   try {
-  //     const response = await axios.post("/adult/class", { name, status: status.value })
-  //     if (response) {
-  //       const data = response?.data?.data
-  //       handleModal(false)
+  useEffect(() => {
 
-  //       setData((pre) => ([
-  //         ...pre,
-  //         data
-  //       ]))
-
-  //     }
-  //   } catch (error) {
-
-  //   }
-  // }
-  const handleSubmit = () => {
-
-    const opt = {
-      axios,
-      data: { name, status: status.value }
+    setName("")
+    return () => {
+      setName("")
     }
-    dispatch(addClass(opt))
-    req_status === "succeeded" ? handleModal(false) : handleModal(true)
-    setName('')
-  }
+  }, [])
+
 
   return (
     <Modal
@@ -69,7 +46,7 @@ const AddNewModal = ({ open, handleModal }) => {
       contentClassName='pt-0'
     >
       <ModalHeader className='mb-1' toggle={handleModal} close={CloseBtn} tag='div'>
-        <h5 className='modal-title'>New Class</h5>
+        <h5 className='modal-title'>{title}</h5>
       </ModalHeader>
       <ModalBody className='flex-grow-1'>
         <div className='mb-1'>
@@ -80,7 +57,7 @@ const AddNewModal = ({ open, handleModal }) => {
             {/* <InputGroupText>
               <User size={15} />
             </InputGroupText> */}
-            <Input id='full-name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Class Name' />
+            <Input id='full-name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
           </InputGroup>
         </div>
         <div className='mb-1'>
@@ -130,7 +107,7 @@ const AddNewModal = ({ open, handleModal }) => {
             <Input type='number' id='salary' />
           </InputGroup>
         </div> */}
-        <Button disabled={!canSave} className='me-1' color='primary' onClick={handleSubmit}>
+        <Button disabled={!canSave} className='me-1' color='primary' onClick={() => handleSubmit({ name, status: status.value })}>
           Add
         </Button>
         <Button color='secondary' onClick={handleModal} outline>

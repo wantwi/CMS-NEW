@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardBody, CardTitle, CardText, CardLink } from 'reactstrap'
-
+import useAuth from '../hooks/useAuth'
 const Home = () => {
+  const { auth } = useAuth()
 
   return (
     <div>
@@ -18,7 +19,7 @@ const Home = () => {
             >
               Template Documentation
             </CardLink>{' '}
-            to understand where to go from here and how to use our template.
+            {auth?.token}
           </CardText>
         </CardBody>
       </Card>

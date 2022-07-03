@@ -4,15 +4,15 @@ import { Facebook, Twitter, Mail, GitHub } from 'react-feather'
 import InputPasswordToggle from '@components/input-password-toggle'
 import { Row, Col, CardTitle, CardText, Form, Label, Input, Button } from 'reactstrap'
 import '@styles/react/pages/page-authentication.scss'
-// import { useLoginMutation } from '../features/auth/authApiSlice'
-
-// import { setCredentials } from '../features/auth/authSlice'
-
+// import useCustomApi from "../api/useCustomApi"
+import { login } from '../auth/config'
+import useAuth from '../hooks/useAuth'
+import { useState } from 'react'
 
 const LoginCover = () => {
   const history = useHistory()
-
-  console.log({ isLoading })
+  // const axios = useCustomApi()
+  const { setAuth } = useAuth()
   const [userName, setuserName] = useState("")
   const [password, setPassword] = useState("")
 
@@ -23,25 +23,17 @@ const LoginCover = () => {
     data.password = password
 
     try {
-      const userData = await login(data).unwrap()
-      // dispatch(setCredentials({ ...userData }))
-      console.log({ userData })
+      const response = await login(data)
+      console.log({ response })
+      const { name, token } = response
+
+      setAuth({ name, token })
 
       history.push('/home')
 
     } catch (err) {
       console.log({ err })
-      // if (!err?.originalStatus) {
-      //     // isLoading: true until timeout occurs
-      //     setErrMsg('No Server Response');
-      // } else if (err.originalStatus === 400) {
-      //     setErrMsg('Missing Username or Password');
-      // } else if (err.originalStatus === 401) {
-      //     setErrMsg('Unauthorized');
-      // } else {
-      //     setErrMsg('Login Failed');
-      // }
-      // errRef.current.focus();
+
     }
   }
 

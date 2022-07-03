@@ -13,21 +13,35 @@ import Select from 'react-select'
 
 // ** Styles
 import '@styles/react/libs/flatpickr/flatpickr.scss'
+import { addItem, selectAllStatus } from '../../../features/setups/committeeSetupSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import useCustomApi from '../../../api/useCustomApi'
 
-const AddNewModal = ({ open, handleModal }) => {
+const AddNewModal = ({ title, open, handleModal }) => {
+  const dispatch = useDispatch()
+  const axios = useCustomApi()
   const [name, setName] = useState("")
   const [status, setStatus] = useState({ value: 'Active', label: 'Active' })
+
   // ** State
   // const [Picker, setPicker] = useState(new Date())
 
   // ** Custom close btn
   const CloseBtn = <X className='cursor-pointer' size={15} onClick={handleModal} />
 
-  const canSave = [name, status].every(Boolean) 
+  const canSave = [name, status].every(Boolean)
+  const req_status = useSelector(selectAllStatus)
 
   const handleSubmit = () => {
-    const data = {name, status:status.value}
-    console.log({data})
+    const data = { name, status: status.value }
+    console.log({ data })
+    const opt = {
+      axios,
+      data
+    }
+
+    dispatch(addItem(opt))
+    req_status === "succeeded" || req_status === "failed" ? handleModal(false) : handleModal(true)
   }
 
   return (
@@ -39,7 +53,7 @@ const AddNewModal = ({ open, handleModal }) => {
       contentClassName='pt-0'
     >
       <ModalHeader className='mb-1' toggle={handleModal} close={CloseBtn} tag='div'>
-        <h5 className='modal-title'>New Committee</h5>
+        <h5 className='modal-title'>{title}</h5>
       </ModalHeader>
       <ModalBody className='flex-grow-1'>
         <div className='mb-1'>
@@ -50,24 +64,22 @@ const AddNewModal = ({ open, handleModal }) => {
             {/* <InputGroupText>
               <User size={15} />
             </InputGroupText> */}
-            <Input size="sm" id='full-name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Class Name' />
+            <Input id='full-name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
           </InputGroup>
         </div>
         <div className='mb-1'>
           <Label className='form-label' for='post'>
-           Status
+            Status
           </Label>
           <Select
-          
-          value={status} onChange={(e) => setStatus({ value: e.target.value, label:e.target.value })}
-              theme={selectThemeColors}
-              className='react-select'
-              classNamePrefix='select'
-               defaultValue={status}
-              options={[{ value: 'Active', label: 'Active' }, { value: 'Inactive', label: 'Inactive' }]}
-              isClearable={false}
-              
-            />
+            value={status} onChange={(e) => setStatus({ value: e.target.value, label: e.target.value })}
+            theme={selectThemeColors}
+            className='react-select'
+            classNamePrefix='select'
+            defaultValue={status}
+            options={[{ value: 'Active', label: 'Active' }, { value: 'Inactive', label: 'Inactive' }]}
+            isClearable={false}
+          />
         </div>
         {/* <div className='mb-1'>
           <Label className='form-label' for='email'>

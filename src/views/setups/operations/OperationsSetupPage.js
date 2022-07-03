@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useState, forwardRef } from 'react'
+import { Fragment, useState, forwardRef, useEffect } from 'react'
 
 import Avatar from '@components/avatar'
 
@@ -10,7 +10,7 @@ import AddNewModal from './AddNewModal'
 // ** Third Party Components
 import ReactPaginate from 'react-paginate'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Share, Printer, FileText, File, Grid, Copy, Plus, Edit,  MoreVertical, Archive, Trash } from 'react-feather'
+import { ChevronDown, Share, Printer, FileText, File, Grid, Copy, Plus, Edit, MoreVertical, Archive, Trash } from 'react-feather'
 
 // import { Badge, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 
@@ -31,86 +31,80 @@ import {
   Badge,
   UncontrolledDropdown
 } from 'reactstrap'
+import { fetchList, selectAllItems, removeItem } from '../../../features/setups/operationSetupSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import useCustomApi from '../../../api/useCustomApi'
 
-const states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary']
 
-const status = {
-    1: { title: 'Current', color: 'light-primary' },
-    2: { title: 'Professional', color: 'light-success' },
-    3: { title: 'Rejected', color: 'light-danger' },
-    4: { title: 'Resigned', color: 'light-warning' },
-    5: { title: 'Applied', color: 'light-info' }
-  }
+// const states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary']
+
+// const status = {
+//   1: { title: 'Current', color: 'light-primary' },
+//   2: { title: 'Professional', color: 'light-success' },
+//   3: { title: 'Rejected', color: 'light-danger' },
+//   4: { title: 'Resigned', color: 'light-warning' },
+//   5: { title: 'Applied', color: 'light-info' }
+// }
 
 // ** Table Common Column
- const columns = [
+
+
+const data = []
+
+// ** Bootstrap Checkbox Component
+const BootstrapCheckbox = forwardRef((props, ref) => (
+  <div className='form-check'>
+    <Input type='checkbox' ref={ref} {...props} />
+  </div>
+))
+
+const OperationsSetupPage = () => {
+  // ** States
+  const dispatch = useDispatch()
+  const [modal, setModal] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [searchValue, setSearchValue] = useState('')
+  const [filteredData, setFilteredData] = useState([])
+  const axios = useCustomApi()
+
+  const items = useSelector(selectAllItems)
+
+  // ** Function to handle Modal toggle
+  const handleModal = () => setModal(!modal)
+
+  const remove = (id) => {
+    dispatch(removeItem({ axios, id }))
+  }
+
+  const columns = [
     {
       name: 'Name',
       minWidth: '300px',
-      sortable: row => row.full_name,
-      cell: row => (
-        <div className='d-flex align-items-center'>
-          {row.avatar === '' ? (
-            <Avatar color={`light-${states[row.status]}`} content={row.full_name} initials />
-          ) : (
-            <Avatar img={require(`@src/assets/images/portrait/small/avatar-s-${row.avatar}`).default} />
-          )}
-          <div className='user-info text-truncate ms-1'>
-            <span className='d-block fw-bold text-truncate'>{row.full_name}</span>
-            <small>{row.post}</small>
-          </div>
-        </div>
-      )
+      sortable: row => row.name,
+      selector: row => row.name
     },
-    // {
-    //   name: 'Tutor',
-    //   sortable: true,
-    //   minWidth: '300px',
-    //   selector: row => row.email,
-    //   cell: () => {
-    //     return (
-    //       <div>Not assigned</div>
-    //     )
-    //   }
-    // },
-    // {
-    //   name: 'Date',
-    //   sortable: true,
-    //   minWidth: '150px',
-    //   selector: row => row.start_date
-    // },
-  
-    // {
-    //   name: 'Salary',
-    //   sortable: true,
-    //   minWidth: '150px',
-    //   selector: row => row.salary
-    // },
-    // {
-    //   name: 'Age',
-    //   sortable: true,
-    //   minWidth: '100px',
-    //   selector: row => row.age
-    // },
     {
       name: 'Status',
       minWidth: '150px',
-      sortable: row => row.status.title,
-      cell: row => {
-        return (
-          <Badge color={status[row.status].color} pill>
-            {status[row.status].title}
-          </Badge>
-        )
-      }
+      sortable: row => row.status,
+      selector: row => row.status
+      // cell: row => {
+      //   return (
+      //     <Badge color={status[row.status].color} pill>
+      //       {status[row.status]}
+      //     </Badge>
+      //   )
+      // }
     },
     {
       name: 'Actions',
       allowOverflow: true,
-      cell: () => {
+      selector: row => row._id,
+      cell: ({ _id }) => {
+
         return (
           <div className='d-flex'>
-            <UncontrolledDropdown>
+            <UncontrolledDropdown hidden>
               <DropdownToggle className='pe-1' tag='span'>
                 <MoreVertical size={15} />
               </DropdownToggle>
@@ -129,31 +123,14 @@ const status = {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            <Edit size={15} />
+            <Edit size={15} style={{ marginRight: 20, cursor: "pointer" }} />
+            <Trash onClick={() => remove(_id)} size={15} style={{ cursor: "pointer" }} />
+
           </div>
         )
       }
     }
   ]
-
-  const data = []
-
-// ** Bootstrap Checkbox Component
-const BootstrapCheckbox = forwardRef((props, ref) => (
-  <div className='form-check'>
-    <Input type='checkbox' ref={ref} {...props} />
-  </div>
-))
-
-const OperationsSetupPage = () => {
-  // ** States
-  const [modal, setModal] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
-  const [searchValue, setSearchValue] = useState('')
-  const [filteredData, setFilteredData] = useState([])
-
-  // ** Function to handle Modal toggle
-  const handleModal = () => setModal(!modal)
 
   // ** Function to handle filter
   const handleFilter = e => {
@@ -172,22 +149,14 @@ const OperationsSetupPage = () => {
     if (value.length) {
       updatedData = data.filter(item => {
         const startsWith =
-          item.full_name.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.post.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.email.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.age.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.salary.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.start_date.toLowerCase().startsWith(value.toLowerCase()) ||
-          status[item.status].title.toLowerCase().startsWith(value.toLowerCase())
+          item.name.toLowerCase().startsWith(value.toLowerCase()) ||
+          item.status.toLowerCase().startsWith(value.toLowerCase())
+        // status[item.status].title.toLowerCase().startsWith(value.toLowerCase())
 
         const includes =
-          item.full_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.post.toLowerCase().includes(value.toLowerCase()) ||
-          item.email.toLowerCase().includes(value.toLowerCase()) ||
-          item.age.toLowerCase().includes(value.toLowerCase()) ||
-          item.salary.toLowerCase().includes(value.toLowerCase()) ||
-          item.start_date.toLowerCase().includes(value.toLowerCase()) ||
-          status[item.status].title.toLowerCase().includes(value.toLowerCase())
+          item.name.toLowerCase().includes(value.toLowerCase()) ||
+
+          status.toLowerCase().includes(value.toLowerCase())
 
         if (startsWith) {
           return startsWith
@@ -212,7 +181,7 @@ const OperationsSetupPage = () => {
       nextLabel=''
       forcePage={currentPage}
       onPageChange={page => handlePagination(page)}
-      pageCount={searchValue.length ? Math.ceil(filteredData.length / 7) : Math.ceil(data.length / 7) || 1}
+      pageCount={searchValue.length ? Math.ceil(filteredData.length / 7) : Math.ceil(items.length / 7) || 1}
       breakLabel='...'
       pageRangeDisplayed={2}
       marginPagesDisplayed={2}
@@ -273,11 +242,17 @@ const OperationsSetupPage = () => {
     link.click()
   }
 
-  console.log({data})
+  useEffect(() => {
+    dispatch(fetchList(axios))
+
+    return () => {
+    }
+  }, [])
+
 
   return (
     <Fragment>
-      <Card>
+      <Card style={{ padding: 20 }}>
         <CardHeader className='flex-md-row flex-column align-md-items-center align-items-start border-bottom'>
           <CardTitle tag='h4'>Church Operation Setup</CardTitle>
           <div className='d-flex mt-md-0 mt-1'>
@@ -332,7 +307,7 @@ const OperationsSetupPage = () => {
         </Row>
         <div className='react-dataTable'>
           <DataTable
-             noHeader
+            noHeader
             pagination
             selectableRows
             columns={columns}
@@ -341,9 +316,9 @@ const OperationsSetupPage = () => {
             sortIcon={<ChevronDown size={10} />}
             paginationDefaultPage={currentPage + 1}
             paginationComponent={CustomPagination}
-            data={searchValue.length ? filteredData : data}
+            data={searchValue.length ? filteredData : items}
             selectableRowsComponent={BootstrapCheckbox}
-           
+
           />
         </div>
       </Card>
